@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
@@ -8,8 +9,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerStats _stats;
     private Rigidbody2D _rb;
     private CapsuleCollider2D _col;
+    
     private FrameInputs _inputs;
     private Vector2 _velocity;
+    private Vector3 _respawnPos;
 
     private float _time;
 
@@ -25,6 +28,16 @@ public class PlayerController : MonoBehaviour
     {
         _cacheQueriesStartInColliders = Physics2D.queriesStartInColliders;
 
+        _respawnPos = transform.position;
+        
+        Reset();
+    }
+
+    private void Reset()
+    {
+        // Respawn Position.
+        transform.position = _respawnPos;
+        
         // Velocity.
         _velocity = new Vector2(0, 0);
         
@@ -53,7 +66,7 @@ public class PlayerController : MonoBehaviour
         
         // Slide.
         _isSliding = false;
-        _slideUsable = false;   
+        _slideUsable = false;
     }
 
     void Update()

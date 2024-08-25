@@ -16,6 +16,9 @@ public class CameraController : MonoBehaviour
         startZ = transform.position.z;
         
         // Setup restrictions.
+        _restrictionCols = new List<Collider2D>();
+        _restrictionTrans = new List<Transform>();
+        
         foreach (var restriction in restrictions) 
         {
             _restrictionCols.Add(restriction.GetComponent<Collider2D>());
@@ -48,8 +51,8 @@ public class CameraController : MonoBehaviour
     #region Restrictions
 
     [SerializeField] private List<GameObject> restrictions;
-    [SerializeField] private List<Collider2D> _restrictionCols;
-    [SerializeField] private List<Transform> _restrictionTrans;
+    private List<Collider2D> _restrictionCols;
+    private List<Transform> _restrictionTrans;
     
     private bool _useRestrictedPos;
     private Vector3 _restrictedPos;
