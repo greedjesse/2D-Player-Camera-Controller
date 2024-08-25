@@ -25,22 +25,35 @@ public class PlayerController : MonoBehaviour
     {
         _cacheQueriesStartInColliders = Physics2D.queriesStartInColliders;
 
+        // Velocity.
+        _velocity = new Vector2(0, 0);
+        
+        // Collisions.
+        _grounded = false;
+        _leftSided = false;
+        _rightSided = false;
         _timeLeftGround = -100;
+
+        // Dash.
+        _isDashing = false;
+        _dashUsable = false;
+        _dashToConsume = false;
         _timeDashWasExecuted = -100;
+        
+        // Jump.
+        _bufferedJumpUsable = false;
+        _coyoteUsable= false;
+        _doubleJumpUsable = false;
+        _endedJumpEarly = false;
+        _jumpToConsume = false;
         _timeJumpWasPressed = -100;
+        
+        _wallJumpToConsume = false;
         _timeWallJumpWasExecuted = -100;
         
-        _jumpToConsume = false;
-        _dashToConsume = false;
-        
-        _doubleJumpUsable = false;
-        _bufferedJumpUsable = false;
-        _coyoteUsable = false;
-        _dashUsable = false;
-        _slideUsable = false;
-
-        _isDashing = false;
+        // Slide.
         _isSliding = false;
+        _slideUsable = false;   
     }
 
     void Update()
