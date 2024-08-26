@@ -6,7 +6,6 @@ public class PlayerStats : ScriptableObject
 {
     [Header("Layer")] 
     public LayerMask playerLayer;
-    public LayerMask camera;
     public LayerMask cameraRestrictionArea;
     
     

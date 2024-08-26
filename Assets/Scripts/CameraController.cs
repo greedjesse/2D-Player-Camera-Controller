@@ -19,10 +19,10 @@ public class CameraController : MonoBehaviour
         _restrictionCols = new List<Collider2D>();
         _restrictionTrans = new List<Transform>();
         
-        foreach (var restriction in restrictions) 
+        foreach (Transform restriction in restrictions.transform) 
         {
-            _restrictionCols.Add(restriction.GetComponent<Collider2D>());
-            _restrictionTrans.Add(restriction.transform.GetChild(0).transform);
+            _restrictionCols.Add(restriction.gameObject.GetComponent<Collider2D>());
+            _restrictionTrans.Add(restriction.gameObject.transform.GetChild(0).transform);
         }
     }
     
@@ -50,7 +50,7 @@ public class CameraController : MonoBehaviour
 
     #region Restrictions
 
-    [SerializeField] private List<GameObject> restrictions;
+    [SerializeField] private GameObject restrictions;
     private List<Collider2D> _restrictionCols;
     private List<Transform> _restrictionTrans;
     
@@ -62,7 +62,7 @@ public class CameraController : MonoBehaviour
         targetPosition = player.position + new Vector3(shiftAmount * ((int)player.transform.localScale.x == 1 ? 1 : -1), 0, startZ);
         
         _useRestrictedPos = false;
-        for (int i = 0; i < restrictions.Count; i++)
+        for (int i = 0; i < restrictions.transform.childCount; i++)
         {
             Collider2D col = _restrictionCols[i];
             if (!col.OverlapPoint(targetPosition)) continue;

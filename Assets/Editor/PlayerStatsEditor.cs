@@ -7,7 +7,6 @@ public class PlayerStatsEditor : Editor
     
     #region SerializedProperties
     private SerializedProperty playerLayer;
-    private SerializedProperty camera;
     private SerializedProperty cameraRestrictionArea;
     
     private SerializedProperty maxSpeed;
@@ -50,7 +49,6 @@ public class PlayerStatsEditor : Editor
     private void OnEnable()
     {
         playerLayer = serializedObject.FindProperty("playerLayer");
-        camera = serializedObject.FindProperty("camera");
         cameraRestrictionArea = serializedObject.FindProperty("cameraRestrictionArea");
         
         maxSpeed = serializedObject.FindProperty("maxSpeed");
@@ -96,8 +94,6 @@ public class PlayerStatsEditor : Editor
         serializedObject.Update();
 
         EditorGUILayout.PropertyField(playerLayer);
-        EditorGUILayout.PropertyField(playerLayer);
-        EditorGUILayout.PropertyField(camera);
         EditorGUILayout.PropertyField(cameraRestrictionArea);
         
         EditorGUILayout.PropertyField(maxSpeed);

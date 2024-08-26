@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GroundCheck
   - CameraRestriction
+  - DeathArea
   layers:
   - Default
   - TransparentFX

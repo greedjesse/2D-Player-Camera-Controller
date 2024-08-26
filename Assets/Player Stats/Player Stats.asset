@@ -15,12 +15,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  camera:
-    serializedVersion: 2
-    m_Bits: 256
   cameraRestrictionArea:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 256
   maxSpeed: 13
   groundAcceleration: 120
   airAcceleration: 25

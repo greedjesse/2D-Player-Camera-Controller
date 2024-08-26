@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
@@ -12,7 +14,6 @@ public class PlayerController : MonoBehaviour
     
     private FrameInputs _inputs;
     private Vector2 _velocity;
-    private Vector3 _respawnPos;
 
     private float _time;
 
@@ -26,9 +27,17 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        _cacheQueriesStartInColliders = Physics2D.queriesStartInColliders;
-
+        // Setup respawn.
         _respawnPos = transform.position;
+
+        _deathAreasCols = new List<Collider2D>();
+        foreach (Transform deathArea in deathAreas.transform)
+        {
+            _deathAreasCols.Add(deathArea.gameObject.GetComponent<Collider2D>());
+        }
+        
+        
+        _cacheQueriesStartInColliders = Physics2D.queriesStartInColliders;
         
         Reset();
     }
@@ -111,6 +120,8 @@ public class PlayerController : MonoBehaviour
         HandleDirection();
         
         ApplyMovement();
+        
+        HandleRespawn();
     }
 
     #region Collisions
@@ -125,13 +136,13 @@ public class PlayerController : MonoBehaviour
         Physics2D.queriesStartInColliders = false;
 
         bool rightHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.right,
-            _stats.collisionHorizontalDistance, ~(_stats.playerLayer | _stats.camera | _stats.cameraRestrictionArea));
+            _stats.collisionHorizontalDistance, ~(_stats.playerLayer| _stats.cameraRestrictionArea));
         bool leftHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.left,
-            _stats.collisionHorizontalDistance, ~(_stats.playerLayer | _stats.camera | _stats.cameraRestrictionArea));
+            _stats.collisionHorizontalDistance, ~(_stats.playerLayer| _stats.cameraRestrictionArea));
         bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.down,
-            _stats.collisionVerticalDistance, ~(_stats.playerLayer | _stats.camera | _stats.cameraRestrictionArea));
+            _stats.collisionVerticalDistance, ~(_stats.playerLayer| _stats.cameraRestrictionArea));
         bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.up,
-            _stats.collisionVerticalDistance, ~(_stats.playerLayer | _stats.camera | _stats.cameraRestrictionArea));
+            _stats.collisionVerticalDistance, ~(_stats.playerLayer| _stats.cameraRestrictionArea));
         
         // Hit ceiling
         if (ceilingHit) _velocity.y = Mathf.Min(0, _velocity.y);
@@ -407,6 +418,26 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region Respawn
+
+    [SerializeField] private GameObject deathAreas;
+    [SerializeField] private List<Collider2D> _deathAreasCols;
+    
+    private Vector3 _respawnPos;
+    
+    private void HandleRespawn()
+    {
+        foreach (Collider2D deathArea in _deathAreasCols)
+        {
+            if (deathArea.IsTouching(_col))
+            {
+                Reset();
+            }
+        }
+    }
+
+    #endregion
+    
     private void ApplyMovement() => _rb.velocity = _velocity;
 }
 
